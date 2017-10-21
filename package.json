@@ -1,0 +1,27 @@
+{
+  "name": "yeg.relief.utils",
+  "version": "0.0.0",
+  "description": "elasticsearch utilities for the YouCanBenefit application.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeg-relief/utils.git"
+  },
+  "author": "Steven Myers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yeg-relief/utils/issues"
+  },
+  "homepage": "https://github.com/yeg-relief/utils#readme",
+  "dependencies": {
+    "elasticsearch": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.46",
+    "ts-node": "^3.0.6",
+    "typescript": "^2.3.4"
+  }
+}

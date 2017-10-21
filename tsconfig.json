@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "experimentalDecorators": true,
+    "sourceMap": false,
+    "outDir": "build",
+    "strictNullChecks": false,
+    "types": [ "node" ]
+  },
+  "include": [
+    "download/**/*",
+    "schema/**/*",
+    "seed/**/*",
+    "upload/**/*",
+    "data/**/*"
+  ],
+  "files": [
+    "elastic-search.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
