@@ -190,31 +190,35 @@ export default {
         index: "master_screener",
         type: "queries",
         mappings: {
-            "meta": {
+            "queries": {
                 "properties": {
-                    "id": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
+                    "meta": {
+                        "properties": {
+                            "id": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "program_guid": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
                             }
                         }
                     },
-                    "program_guid": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    }
+                    "query": {
+                        "type": "percolator"
+                    },
                 }
-            },
-            "query": {
-                "type": "percolator"
-            },
+            }
         }
     },
     "programs": {

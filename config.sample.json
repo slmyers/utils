@@ -1,3 +1,4 @@
 {
-  "host": "<your elasticsearch endpoint here"
+  "host": "<your elasticsearch pull endpoint here> (download data from here)",
+  "target": "<your elasticsearch push endpoint here> (upload data here)"
 }
