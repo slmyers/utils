@@ -13,7 +13,8 @@
     "schema/**/*",
     "seed/**/*",
     "upload/**/*",
-    "data/**/*"
+    "data/**/*",
+    "stream/**/*"
   ],
   "files": [
     "elastic-search.d.ts"
