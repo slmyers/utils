@@ -42,9 +42,8 @@ function readDataError(err) {
 }
 
 function executeUpload(data: {[key: string] : Object}): Promise<Object> {
-    // const args = process.argv.slice(2);
-    //const target = JSON.parse(fs.readFileSync(path.resolve('..', 'config.json')).toString()).target  || args[0];
-    const target = "http://localhost:9200";
+    const args = process.argv.slice(2);
+    const target = JSON.parse(fs.readFileSync(path.resolve('..', 'config.json')).toString()).target  || args[0];
 
 
     if (target.includes("youcanbenefit")) {

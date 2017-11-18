@@ -14,14 +14,11 @@ export default class Seeder {
     }
 
     async execute() {
-        const results = [
+        await Promise.all([
             await this.createIndex(Schema.programs.index, this.mappings.programMapping),
             await this.createIndex(Schema.master_screener.index, this.mappings.screenerMapping),
             await this.createIndex(Schema.queries.index, this.mappings.queryMapping)
-        ];
-
-        console.log(results);
-
+        ]);
 
         return await this.uploader.execute();
     }
