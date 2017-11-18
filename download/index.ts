@@ -1,6 +1,6 @@
-import Schema from "../schema"
+import { Schema } from "../schema"
 
-export default class YcbDownloader {
+export class YcbDownloader {
     // dataset is small no pagination when retrieving data
     private readonly PAGE_SIZE = 10000;
 

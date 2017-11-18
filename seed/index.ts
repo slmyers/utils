@@ -1,7 +1,7 @@
-import Schema from "../schema"
+import { Schema } from "../schema"
 import Uploader from "../upload"
 
-export default class Seeder {
+export class Seeder {
     private uploader: Uploader;
 
     constructor(

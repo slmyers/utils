@@ -1,5 +1,5 @@
 import { Client } from 'elasticsearch'
-import Uploader from "./index"
+import { Uploader } from "./index"
 import * as path from "path"
 import * as fs from "fs"
 

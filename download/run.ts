@@ -1,5 +1,5 @@
 import { Client } from 'elasticsearch'
-import Downloader from "./index"
+import { YcbDownloader } from "./index"
 import * as path from "path"
 import * as fs from "fs"
 
@@ -23,7 +23,7 @@ function executeDownload(): Promise<any> {
     const args = process.argv.slice(2);
     const host = JSON.parse(fs.readFileSync(path.resolve('..', 'config.json')).toString()).host  || args[0];
 
-    return new Downloader(new Client({ host })).execute()
+    return new YcbDownloader(new Client({ host })).execute()
 }
 
 function downloadFailure(err) {
@@ -66,7 +66,7 @@ function writeDataToFile({programs, programMappings,  queries, queryMappings, sc
 function buildOutputFolder(): Promise<string> {
     const args = process.argv.slice(2);
 
-    const folder = args[0] ? path.resolve( __dirname, '..', args[0]) : path.resolve(__dirname, '..', 'data');
+    const folder = args[0] ? path.resolve( __dirname, '..', args[0]) : path.resolve(__dirname, 'data');
 
     if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder)

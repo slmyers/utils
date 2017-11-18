@@ -1,5 +1,5 @@
 import { Client } from 'elasticsearch'
-import Seeder from "./index"
+import { Seeder } from "./index"
 import * as path from "path"
 import * as fs from "fs"
 

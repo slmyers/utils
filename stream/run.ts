@@ -1,5 +1,5 @@
-import Streamer from "./index"
-import Downloader from "../download"
+import { Stream } from "./index"
+import { YcbDownloader } from "../download"
 import { Client } from "elasticsearch"
 import * as fs from "fs"
 import * as path from "path"
@@ -12,7 +12,7 @@ function main() {
 
 
     const downloadClient = buildDownloadClient();
-    const streamer = new Streamer(new Downloader(downloadClient), target);
+    const streamer = new Stream(new YcbDownloader(downloadClient), target);
 
     return streamer.execute()
         .catch(console.error)

@@ -1,4 +1,4 @@
-export default {
+export const Schema = {
     "master_screener": {
         index: "questions",
         type: "screener",
@@ -12,4 +12,4 @@ export default {
         index: "programs",
         type: "user_facing",
     }
-}
+};

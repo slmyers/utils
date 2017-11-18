@@ -1,6 +1,6 @@
-import Schema from "../schema"
+import { Schema } from "../schema"
 
-export default class Uploader {
+export class Uploader {
 
     constructor(
         private client: Elasticsearch.Client,

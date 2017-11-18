@@ -1,11 +1,11 @@
-import Downloader from "../download"
+import { YcbDownloader } from "../download"
 import { Client } from "elasticsearch"
-import Seeder from "../seed"
+import { Seeder } from "../seed"
 
-export default class Stream {
+export class Stream {
 
     constructor(
-        private downloader: Downloader,
+        private downloader: YcbDownloader,
         private target: string
     ) {
         if (target.includes("youcanbenefit")) {
