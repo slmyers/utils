@@ -18,3 +18,8 @@ Use `config.sample.json` as a reference.
 
 
 The sub-folders have `README` files.
+
+# notes
+
+I only use these utils via `terminal`. With some tests I think they
+could be used more programmatically and integrated with the `api-server`.
