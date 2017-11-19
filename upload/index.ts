@@ -1,16 +1,15 @@
 import { Schema } from "../schema"
-import * as I from "../interfaces"
 
 export class Uploader {
 
     constructor(
         private client: Elasticsearch.Client,
         private overwrite: boolean,
-        private data: I.Data
+        private data: any
     ) {}
 
     async execute() {
-        let screenerRes, programRes, queryRes, queryMapping;
+        let screenerRes, programRes, queryRes;
         const returnNull = _ => null;
 
 
@@ -26,10 +25,6 @@ export class Uploader {
         if (this.data.programs) {
             programRes = await this.uploadPrograms().catch(returnNull)
         }
-
-
-
-
 
         return {
             screenerRes,

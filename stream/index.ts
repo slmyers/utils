@@ -1,9 +1,5 @@
 import { YcbDownloader } from "../download"
-import { Client } from "elasticsearch"
 import { Seeder } from "../seed"
-import * as fs from "fs"
-import * as path from "path"
-
 
 export class Stream {
 
@@ -23,12 +19,8 @@ export class Stream {
             .then((result: {[key: string]: any}) => {
                 console.log("DOWNLOAD COMPLETE");
                 console.log("STARTING UPLOAD");
-                console.log(result);
                 const { programs, queries, screener } = result;
                 const { programMappings, queryMappings, screenerMappings } = result;
-                console.log("here");
-                fs.writeFileSync(path.resolve(__dirname, "result.json"), JSON.stringify(result));
-
                 return new Seeder({ queryMappings, programs, queries, screener}, {programMappings, queryMappings, screenerMappings}).execute()
             })
             .catch(error => this.genError("ERROR SEEDING", error))

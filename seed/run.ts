@@ -1,8 +1,6 @@
-import { Client } from 'elasticsearch'
 import { Seeder } from "./index"
 import * as path from "path"
 import * as fs from "fs"
-import * as I from "../interfaces"
 
 main();
 
@@ -41,14 +39,14 @@ function readData(folder?: string): Promise<any[]> {
         fs.readFileSync(path.resolve(concreteFolder, 'screener_mapping.json')).toString()
     ).questions;
 
-    const a: I.Data = {
+    const a = {
         queryMappings,
         programs,
         queries,
         screener
     };
 
-    const b: I.Mapping = {
+    const b = {
         programMappings,
         queryMappings,
         screenerMappings

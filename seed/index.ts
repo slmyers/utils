@@ -1,9 +1,6 @@
 import { Schema } from "../schema"
 import { Uploader } from "../upload"
 import { Client } from "elasticsearch"
-import * as I from "../interfaces"
-import * as fs from "fs"
-import * as path from "path"
 
 
 export class Seeder {
@@ -11,37 +8,30 @@ export class Seeder {
     private client: Elasticsearch.Client;
 
     constructor(
-        private data: I.Data,
-        private mappings: I.Mapping,
+        private data: any,
+        private mappings: any,
         private overwrite: boolean = true
     ) {
-        this.client = new Client({host: "http://localhost:9200", log: 'trace'});
+        this.client = new Client({host: "http://localhost:9200"});
         this.uploader = new Uploader(this.client, overwrite, data);
-        console.log("NEW UPLOAD CLIENT")
     }
 
     async execute() {
-        console.log(this.mappings.programMappings);
-        fs.writeFileSync(path.resolve(__dirname, "mappings.json"), JSON.stringify(this.mappings));
-        fs.writeFileSync(path.resolve(__dirname, "data.json"), JSON.stringify(this.data));
-        console.log("*");
-
-
         await Promise.all([
             await this.createIndex(
                 Schema.queries.index,
                 Schema.queries.type,
-                this.mappings.queryMappings[Schema.queries.index]['mappings'][Schema.queries.type]['properties']
+                this.normaliseData(this.mappings, 'queries','master_screener' ,'queryMappings', )
             ),
             await this.createIndex(
                 Schema.programs.index,
                 Schema.programs.type,
-                this.mappings.programMappings[Schema.programs.index]['mappings'][Schema.programs.type]['properties']
+                this.normaliseData(this.mappings, 'user_facing', 'programs' , 'programMappings')
             ),
             await this.createIndex(
                 Schema.master_screener.index,
                 Schema.master_screener.type,
-                this.mappings.screenerMappings[Schema.master_screener.index]['mappings'][Schema.master_screener.type]['properties']
+                this.normaliseData(this.mappings, 'screener', 'questions', 'screenerMappings')
             ),
 
         ]).catch(e => {
@@ -50,10 +40,27 @@ export class Seeder {
             process.exit(1);
         });
 
-        console.log("*");
-
         return await this.uploader.execute();
     }
+
+    // data coming through run.ts is different than Stream#execute
+    normaliseData(mappings, type, index, container) {
+        let val;
+
+        if (mappings[container].mappings) {
+            val = mappings[container].mappings[type].properties;
+        } else if (mappings[container][index]) {
+            val = mappings[container][index].mappings[type].properties
+        } else {
+            throw new Error("FOILED AGAIN!");
+        }
+
+
+
+        return val;
+
+    }
+
 
     async createIndex(index: string, type: string,  properties: {[key: string]: any}): Promise<any> {
         const indexExists = await this.client.indices.exists({ index });
@@ -69,7 +76,7 @@ export class Seeder {
             index,
         })
             .catch(err => {
-                console.log("bebrebrbe")
+                console.log("bebrebrbe");
                 console.log("\x1b[31m", err);
                 process.exit(69);
                 return Error(err)
