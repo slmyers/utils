@@ -1,16 +1,18 @@
 import { Schema } from "../schema"
+import * as I from "../interfaces"
 
 export class Uploader {
 
     constructor(
         private client: Elasticsearch.Client,
         private overwrite: boolean,
-        private data: any
+        private data: I.Data
     ) {}
 
     async execute() {
-        let screenerRes, programRes, queryRes;
+        let screenerRes, programRes, queryRes, queryMapping;
         const returnNull = _ => null;
+
 
         if (this.data.queries) {
             queryRes = await this.uploadQueries().catch(returnNull)
@@ -27,6 +29,8 @@ export class Uploader {
 
 
 
+
+
         return {
             screenerRes,
             programRes,
@@ -35,7 +39,7 @@ export class Uploader {
     }
 
     private uploadScreener(): Promise<any> {
-        this.data.screener.created = Date.now();
+        this.data.screener['created'] = Date.now();
 
         return this.client.index({
             index: Schema.master_screener.index,
@@ -115,10 +119,10 @@ export class Uploader {
         return this.data.queries.map( (query, i) => this.client.index( {
                 index: Schema.queries.index,
                 type: Schema.queries.type,
-                id: query.meta.id,
+                id: query['meta'].id,
                 body: {
-                    query: query.query,
-                    meta: query.meta
+                    query: query['query'],
+                    meta: query['meta']
                 }
             }).catch(err => {
                 console.log("\x1b[31m", 'ERROR: uploading queries');
@@ -136,5 +140,22 @@ export class Uploader {
             id: query.meta ? query.meta.id : 'no meta this is bad',
         })
             .then((exists: boolean) => [exists, query])
+    }
+
+    async createIndex(index: string, body?: {[key: string]: any}): Promise<any> {
+        const indexExists = await this.client.indices.exists({ index });
+
+        if (indexExists && this.overwrite) {
+            await this.client.indices.delete({ index })
+        } else if (indexExists && !this.overwrite) {
+            return false
+        }
+
+        return this.client.indices.create({ index, body: body || null })
+            .catch(err => {
+                console.log("\x1b[31m", err);
+                process.exit(69);
+                return Error(err)
+            })
     }
 }

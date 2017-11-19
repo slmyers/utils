@@ -12,6 +12,7 @@ Use `config.sample.json` as a reference.
 * `Schema`
 * `YcbDownloader`
 * `Seeder`
+* `Uploader`
 
 `elastic-search.d.ts` is a file copied from th `api-server`.
 

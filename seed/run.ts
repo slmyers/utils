@@ -2,6 +2,7 @@ import { Client } from 'elasticsearch'
 import { Seeder } from "./index"
 import * as path from "path"
 import * as fs from "fs"
+import * as I from "../interfaces"
 
 main();
 
@@ -13,7 +14,7 @@ function main() {
         .then(_ => console.log("Seed is completed."))
 }
 
-function readData(folder?: string): Promise<{[key: string] : Object}[]> {
+function readData(folder?: string): Promise<any[]> {
     const concreteFolder = folder || path.resolve(__dirname, 'data');
 
     const programs = JSON.parse(
@@ -28,31 +29,33 @@ function readData(folder?: string): Promise<{[key: string] : Object}[]> {
         fs.readFileSync(path.resolve(concreteFolder, 'screener.json')).toString()
     );
 
-    const programMapping = JSON.parse(
+    const programMappings = JSON.parse(
         fs.readFileSync(path.resolve(concreteFolder, 'program_mapping.json')).toString()
     ).programs;
 
-    const queryMapping = JSON.parse(
+    const queryMappings = JSON.parse(
         fs.readFileSync(path.resolve(concreteFolder, 'query_mapping.json')).toString()
     ).master_screener;
 
-    const screenerMapping = JSON.parse(
+    const screenerMappings = JSON.parse(
         fs.readFileSync(path.resolve(concreteFolder, 'screener_mapping.json')).toString()
     ).questions;
 
+    const a: I.Data = {
+        queryMappings,
+        programs,
+        queries,
+        screener
+    };
 
-    return Promise.resolve([
-        {
-            programs,
-            queries,
-            screener
-        },
-        {
-            programMapping,
-            queryMapping,
-            screenerMapping
-        }
-    ])
+    const b: I.Mapping = {
+        programMappings,
+        queryMappings,
+        screenerMappings
+    };
+
+
+    return Promise.resolve([a, b])
 }
 
 function readDataError(err) {
@@ -61,19 +64,18 @@ function readDataError(err) {
     process.exit(3);
 }
 
-function executeSeed(_data: {[key: string]: Object}[]): Promise<Object> {
+function executeSeed(_data: any[]): Promise<Object> {
     // const args = process.argv.slice(2);
     //const target = JSON.parse(fs.readFileSync(path.resolve('..', 'config.json')).toString()).target  || args[0];
     const target = "http://localhost:9200";
 
     const [data, mappings] = _data;
 
-
     if (target.includes("youcanbenefit")) {
         return Promise.reject(new Error("ACCIDENTAL SEED"))
     }
 
-    return new Seeder(new Client({host: target, log: 'trace'}), data, mappings).execute()
+    return new Seeder(data, mappings).execute()
 }
 
 function executeSeedError(err) {

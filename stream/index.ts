@@ -1,6 +1,9 @@
 import { YcbDownloader } from "../download"
 import { Client } from "elasticsearch"
 import { Seeder } from "../seed"
+import * as fs from "fs"
+import * as path from "path"
+
 
 export class Stream {
 
@@ -16,21 +19,24 @@ export class Stream {
 
     execute() {
         return this.downloader.execute()
-            .catch(_ => this.genError("ERROR DOWNLOADING"))
-            .then((result: {[key: string]: Object}) => {
+            .catch(_ => this.genError("ERROR DOWNLOADING", _))
+            .then((result: {[key: string]: any}) => {
                 console.log("DOWNLOAD COMPLETE");
                 console.log("STARTING UPLOAD");
-
-                const client = new Client({host: this.target, log: 'trace'});
+                console.log(result);
                 const { programs, queries, screener } = result;
                 const { programMappings, queryMappings, screenerMappings } = result;
-                return new Seeder(client, { programs, queries, screener}, {programMappings,queryMappings, screenerMappings}).execute()
+                console.log("here");
+                fs.writeFileSync(path.resolve(__dirname, "result.json"), JSON.stringify(result));
+
+                return new Seeder({ queryMappings, programs, queries, screener}, {programMappings, queryMappings, screenerMappings}).execute()
             })
-            .catch(_ => this.genError("ERROR SEEDING"))
+            .catch(error => this.genError("ERROR SEEDING", error))
     }
 
-    private genError(msg) {
+    private genError(msg, error) {
         console.error("\x1b[31m", msg);
+        console.error(error);
         throw new Error(msg)
     }
 }
