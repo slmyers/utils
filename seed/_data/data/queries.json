@@ -1,0 +1,19 @@
+[
+  {
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "term": {
+              "test": true
+            }
+          }
+        ]
+      }
+    },
+    "meta": {
+      "program_guid": "eCfJuTamHKj3BkwkEGhlfKuMTV",
+      "id": "omVcQtLa8R0zNlOL6c3y4ohL7y"
+    }
+  }
+]

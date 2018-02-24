@@ -1,0 +1,38 @@
+{
+  "master_screener": {
+    "mappings": {
+      "queries": {
+        "properties": {
+          "meta": {
+            "properties": {
+              "id": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "program_guid": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          },
+          "test": {
+            "type": "boolean"
+          },
+          "query": {
+            "type": "percolator"
+          }
+        }
+      }
+    }
+  }
+}
