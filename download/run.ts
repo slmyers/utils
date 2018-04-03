@@ -14,7 +14,8 @@ function main() {
         .then(outputFolder => folder = outputFolder)
         .then(executeDownload)
         .catch(downloadFailure)
-        .then(data => writeDataToFile(data, folder))
+        //.then(data => writeDataToFile(data, folder))
+        .then(data => writeToFilePromise(path.resolve('data', 'data.json'), data))
         .catch(writeFileError)
         .then(_ => console.log("Download complete."))
 }
