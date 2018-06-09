@@ -1,3 +1,8 @@
+# NOTE:
+
+should probably use the data from [here](https://github.com/yeg-relief/deploy/blob/master/data.json)
+
+
 `Seeder` from `./index.ts` can be used to create a working database.
 
 __depends on ../upload#Uploader__
